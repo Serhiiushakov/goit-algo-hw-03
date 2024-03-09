@@ -1,0 +1,26 @@
+from datetime import datetime, timedelta
+
+users = [
+    {"name": "John Doe", "birthday": "1985.03.09"},
+    {"name": "Jane Smith", "birthday": "1990.03.04"}
+] # наданий список
+
+def get_upcoming_birthdays(users):
+    today = datetime.today().date()
+    next_year_congratulation_list = []
+    congratulation_list = []
+    for user in users: # Вибираємо юзера
+        birthday = datetime.strptime(user["birthday"], "%Y.%m.%d").date() # в  datetime
+        birthday = birthday.replace(year=today.year) 
+        if 0 <= birthday.toordinal() - today.toordinal() <= 7: # ДН протягом 7 днів
+            day = birthday
+            if birthday.isoweekday() == 6: # Суботу  переносим на понеділок
+                day = birthday + timedelta(days=2)
+            if birthday.isoweekday() == 7: # неділя   переносим на понеділок
+                day = birthday + timedelta(days=1)
+            congratulation_list.append({"name": {user["name"]}, "congratulation": day.strftime("%Y.%m.%d")}) # Список кого будемо вітати
+        elif birthday.toordinal() - today.toordinal() < 0: # Уви день народження на слідуючий рік
+            next_year_congratulation_list.append({"name": user["name"], "birthday": birthday.strftime("%Y.%m.%d")}) # next year
+    return congratulation_list
+upcoming_birthdays = get_upcoming_birthdays(users)
+print("Список привітань на поточний тиждень:", upcoming_birthdays, end="\n")
