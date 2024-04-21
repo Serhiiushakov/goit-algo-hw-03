@@ -1,45 +1,17 @@
-#Вам необхідно написати функцію get_numbers_ticket(min, max, quantity), яка допоможе 
-#генерувати набір унікальних випадкових чисел для таких лотерей.
+import random    # імпортуємо рандом
 
-import random
+def get_numbers_ticket(min, max, quantity): # функція, яка приймає 3 параметра
 
-def input_function():
-    min_number, max_number, quantity_number = 0, 0, 0 #створення параметрів функції
+    #Перевіряємо чи коректні числа введені на вхід параметрів
+    if min < 1 or max > 1000 or quantity < 1 or quantity > (max - min + 1) or min > max:
+        return []   # Повертаємо пустий список, якщо параметри не коректно вибрані
 
-    while True: # Цикл на помилки
-        try:
-            if  min_number and min_number > 0: # мін
-                pass
-            else:
-                min_number = int(input("Введіть міінімальне значення, яке більшео 0: "))
-                continue
-            if max_number and max_number < 1001:
-                pass
-            else:    
-                max_number = int(input("Введіть максимальне зпнчення, яке менше 1000: "))
-                continue
-            if quantity_number: # кількість
-                pass
-            else:    
-                quantity_number = int(input("Ведіть кількість цифр для вивведення: ")) 
-                continue
-            break
-        except ValueError:
-            print("Вибачте, введіть вірно число")
-            continue
-    return (min_number, max_number, quantity_number)
+    # Генеруємо випадкові та  унікальні числа
+    result = random.sample(range(min, max + 1), quantity)
 
-def get_numbers_ticket(min_number, max_number, quantity_number):
-    number_list = []
-    if min_number >= max_number or max_number - min_number < quantity_number: # пустий список
-        return number_list
-    
-    while quantity_number > 0: # цикл поки 0
-        random_number = random.randint(min_number, max_number) # рандом
-        if random_number in number_list: # наповнюємо список
-            continue
-        else:
-            number_list.append(random_number) 
-            quantity_number -= 1
-    return (number_list)
-print(f'Ваші лотерейні числа:', get_numbers_ticket(*input_function()))
+    # Повертаємо відсортований список чисел
+    return sorted(result)
+
+# Приклад використання із Конспекту д/з:
+lottery_numbers = get_numbers_ticket(1, 49, 6)
+print("Ваші лотерейні числа:", lottery_numbers)
